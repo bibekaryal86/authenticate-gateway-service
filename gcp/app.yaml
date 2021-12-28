@@ -1,3 +1,4 @@
+# NOT USED, F1 CLASS NOT ENOUGH RAM, DEPLOYED TO AZURE FREE TIER BUT KEPT THIS JUST IN CASE
 runtime: java11
 env: standard
 instance_class: F1
