@@ -67,6 +67,7 @@ azurewebapp {
     }
     appSettings {
         SPRING_PROFILES_ACTIVE = 'production'
+        TZ = 'America/Denver'
     }
     auth {
         type = 'azure_cli'

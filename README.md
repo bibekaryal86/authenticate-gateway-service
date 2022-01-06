@@ -9,7 +9,7 @@ The app also functions as an authentication server to validate user credentials.
 * Validate username / password and return user details with token to use in subsequent service calls
 * Create new user
 
-This is very similar to `pets-gateway-layer` found here: https://github.com/bibekaryal86/pets-gateway-layer, and routes
+This is very similar to `pets-gateway` found here: https://github.com/bibekaryal86/pets-gateway, and routes
 the services included in that gateway, however, this `authenticate-gateway` is intended for all personal projects moving
 forward to handle the CORS error.
 
@@ -20,8 +20,7 @@ insert/retrieve data using HTTPS calls using `RestTemplate`.
 To run the app, we need to supply the following environment variables:
 
 * Active Profile
-    * spring.profiles.active (development, docker, production)
-    * SPRING_PROFILES_ACTIVE in AWS Elastic Beanstalk
+    * SPRING_PROFILES_ACTIVE (development, docker, production)
 * Port
     * This is optional, if not provided, it defaults to 8080
     * Required port 5000 (NGINX) in AWS Elastic Beanstalk
