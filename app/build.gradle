@@ -55,8 +55,8 @@ configurations {
 }
 
 azurewebapp {
-    subscription = '31c8a84c-1c0e-4d0f-b45f-b76c92993209'
-    resourceGroup = 'authgateway'
+    subscription = 'd8d5e9ef-5100-4062-b717-dbeb2dfc5061'
+    resourceGroup = 'gatewayauth_group'
     appName = 'gatewayauth'
     pricingTier = 'F1'
     region = 'westus2'
