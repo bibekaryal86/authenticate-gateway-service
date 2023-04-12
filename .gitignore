@@ -12,3 +12,6 @@ gcp/*.jar
 
 # Ignore credentials to be committed
 gcp/app-credentials.yaml
+
+# Ignore lombok.config
+app/lombok.config
