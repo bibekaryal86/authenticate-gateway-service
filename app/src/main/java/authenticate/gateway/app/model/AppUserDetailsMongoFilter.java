@@ -2,9 +2,8 @@ package authenticate.gateway.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
-
 import java.io.Serializable;
+import lombok.*;
 
 @Data
 @Builder
@@ -13,5 +12,5 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppUserDetailsMongoFilter implements Serializable {
-    private String username;
+  private String username;
 }
