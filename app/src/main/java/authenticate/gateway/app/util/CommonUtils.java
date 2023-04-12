@@ -20,25 +20,10 @@ public class CommonUtils {
     String auth = "";
     String username;
     String password;
-
-    switch (serviceName) {
-      case "pets-database":
-        username = getSystemEnvProperty(PETS_DATABASE_USR, null);
-        password = getSystemEnvProperty(PETS_DATABASE_PWD, null);
-        break;
-      case "pets-service":
-        username = getSystemEnvProperty(PETS_SERVICE_USR, null);
-        password = getSystemEnvProperty(PETS_SERVICE_PWD, null);
-        break;
-      case "health-data":
-        username = getSystemEnvProperty(HDT_SERVICE_USR, null);
-        password = getSystemEnvProperty(HDT_SERVICE_PWD, null);
-        break;
-      default:
-        username = "";
-        password = "";
-        break;
-    }
+    String systemEnvPropertyUser = serviceName + SERVICE_AUTH_USR;
+    String systemEnvPropertyPassword = serviceName + SERVICE_AUTH_PWD;
+    username = getSystemEnvProperty(systemEnvPropertyUser, null);
+    password = getSystemEnvProperty(systemEnvPropertyPassword, null);
 
     if (hasText(username) && hasText(password)) {
       auth =

@@ -11,13 +11,10 @@ public class ConstantUtils {
   public static final String MONGO_USER = "MONGO_USER";
   public static final String MONGO_PWD = "MONGO_PWD";
   public static final String APP_SECRET_KEY = "SECRET_KEY";
-
-  public static final String PETS_DATABASE_USR = "PD_USR";
-  public static final String PETS_DATABASE_PWD = "PD_PWD";
-  public static final String PETS_SERVICE_USR = "PS_USR";
-  public static final String PETS_SERVICE_PWD = "PS_PWD";
-  public static final String HDT_SERVICE_USR = "HDT_USR";
-  public static final String HDT_SERVICE_PWD = "HDT_PWD";
+  // also provided at runtime but as appendix to service name
+  // eg: pets-service-user, pets-service-pwd, for all services
+  public static final String SERVICE_AUTH_USR = "-usr";
+  public static final String SERVICE_AUTH_PWD = "-pwd";
 
   // others
   public static final String MONGO_DATABASE_ENV_DETAILS = "env_details";
