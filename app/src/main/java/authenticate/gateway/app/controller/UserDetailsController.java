@@ -7,7 +7,7 @@ import authenticate.gateway.app.exception.ClientException;
 import authenticate.gateway.app.exception.ServerException;
 import authenticate.gateway.app.model.UserDetailsRequest;
 import authenticate.gateway.app.model.UserDetailsResponse;
-import authenticate.gateway.app.service.AppUserDetailsService;
+import authenticate.gateway.app.service.UserDetailsService;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-public class AppUserDetailsController {
+public class UserDetailsController {
 
-  private final AppUserDetailsService appUserDetailsService;
+  private final UserDetailsService userDetailsService;
 
-  public AppUserDetailsController(AppUserDetailsService appUserDetailsService) {
-    this.appUserDetailsService = appUserDetailsService;
+  public UserDetailsController(UserDetailsService userDetailsService) {
+    this.userDetailsService = userDetailsService;
   }
 
   @CrossOrigin
@@ -34,7 +34,7 @@ public class AppUserDetailsController {
     if (validateRequest(username, userDetailsRequest)) {
       try {
         return ResponseEntity.ok(
-            appUserDetailsService.authenticateLogin(userDetailsRequest, getSourceIp(request)));
+            userDetailsService.authenticateLogin(userDetailsRequest, getSourceIp(request)));
       } catch (ClientException exc) {
         return new ResponseEntity<>(UserDetailsResponse.builder().build(), HttpStatus.UNAUTHORIZED);
       } catch (ServerException exs) {

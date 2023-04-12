@@ -19,13 +19,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AppUserDetailsService {
+public class UserDetailsService {
 
   private final UserDetailsRepository userDetailsRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final ObjectMapper objectMapper;
 
-  public AppUserDetailsService(UserDetailsRepository userDetailsRepository) {
+  public UserDetailsService(UserDetailsRepository userDetailsRepository) {
     this.userDetailsRepository = userDetailsRepository;
     this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     this.objectMapper = new ObjectMapper();
