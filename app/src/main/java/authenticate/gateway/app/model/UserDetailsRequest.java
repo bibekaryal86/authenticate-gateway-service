@@ -11,9 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AppUserDetailsRequest implements Serializable {
+public class UserDetailsRequest implements Serializable {
   private String username;
   @ToString.Exclude private String password;
-  private AppUserDetails userDetails;
+  private UserDetails userDetails;
   private String sourceIp;
 }

@@ -16,26 +16,34 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackageClasses = UserDetails.class, mongoTemplateRef = ConstantUtils.MONGO_TEMPLATE_USER_DETAILS)
+@EnableMongoRepositories(
+    basePackageClasses = UserDetails.class,
+    mongoTemplateRef = ConstantUtils.MONGO_TEMPLATE_USER_DETAILS)
 public class MongoConfigUserDetails {
 
-    @Bean(name = ConstantUtils.MONGO_CLIENT_USER_DETAILS)
-    public MongoClient mongoClient() {
-        String username = CommonUtils.getSystemEnvProperty(ConstantUtils.MONGO_USER, null);
-        String password = CommonUtils.getSystemEnvProperty(ConstantUtils.MONGO_PWD, null);
-        String connectionString = String.format(ConstantUtils.MONGO_CONNECTION_STRING, username, password);
-        return MongoClients.create(MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .build());
-    }
+  @Bean(name = ConstantUtils.MONGO_CLIENT_USER_DETAILS)
+  public MongoClient mongoClient() {
+    String username = CommonUtils.getSystemEnvProperty(ConstantUtils.MONGO_USER, null);
+    String password = CommonUtils.getSystemEnvProperty(ConstantUtils.MONGO_PWD, null);
+    String connectionString =
+        String.format(ConstantUtils.MONGO_CONNECTION_STRING, username, password);
+    return MongoClients.create(
+        MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(connectionString))
+            .build());
+  }
 
-    @Bean(name = ConstantUtils.MONGO_DB_FACTORY_USER_DETAILS)
-    public MongoDatabaseFactory mongoDatabaseFactory(@Qualifier(ConstantUtils.MONGO_CLIENT_USER_DETAILS) MongoClient mongoClient) {
-        return new SimpleMongoClientDatabaseFactory(mongoClient, ConstantUtils.MONGO_DATABASE_USER_DETAILS);
-    }
+  @Bean(name = ConstantUtils.MONGO_DB_FACTORY_USER_DETAILS)
+  public MongoDatabaseFactory mongoDatabaseFactory(
+      @Qualifier(ConstantUtils.MONGO_CLIENT_USER_DETAILS) MongoClient mongoClient) {
+    return new SimpleMongoClientDatabaseFactory(
+        mongoClient, ConstantUtils.MONGO_DATABASE_USER_DETAILS);
+  }
 
-    @Bean(name = ConstantUtils.MONGO_TEMPLATE_USER_DETAILS)
-    public MongoTemplate mongoTemplate(@Qualifier(ConstantUtils.MONGO_DB_FACTORY_USER_DETAILS) MongoDatabaseFactory mongoDatabaseFactory) {
-        return new MongoTemplate(mongoDatabaseFactory);
-    }
+  @Bean(name = ConstantUtils.MONGO_TEMPLATE_USER_DETAILS)
+  public MongoTemplate mongoTemplate(
+      @Qualifier(ConstantUtils.MONGO_DB_FACTORY_USER_DETAILS)
+          MongoDatabaseFactory mongoDatabaseFactory) {
+    return new MongoTemplate(mongoDatabaseFactory);
+  }
 }

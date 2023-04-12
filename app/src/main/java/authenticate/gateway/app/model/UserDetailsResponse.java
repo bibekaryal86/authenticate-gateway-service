@@ -11,11 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AppUserDetailsMongo implements Serializable {
-  @ToString.Exclude private String dataSource;
-  @ToString.Exclude private String database;
-  @ToString.Exclude private String collection;
-  private AppUserDetails document;
-  private AppUserDetailsMongoFilter filter;
-  private String insertedId;
+public class UserDetailsResponse implements Serializable {
+  private String token;
+  private UserDetails userDetails;
 }

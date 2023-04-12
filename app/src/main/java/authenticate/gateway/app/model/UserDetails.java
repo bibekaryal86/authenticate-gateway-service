@@ -3,7 +3,7 @@ package authenticate.gateway.app.model;
 import authenticate.gateway.app.util.ConstantUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +13,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.io.Serializable;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,8 +21,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = ConstantUtils.MONGO_COLLECTION_USER_DETAILS)
 public class UserDetails implements Serializable {
-  @MongoId
-  private ObjectId id;
+  @MongoId private ObjectId id;
   private String username;
   @ToString.Exclude private String password;
   private String firstName;

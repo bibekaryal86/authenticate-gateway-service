@@ -32,5 +32,6 @@ public class ConstantUtils {
   public static final String MONGO_DB_FACTORY_ENV_DETAILS = "mongoDbFactoryEnvDetails";
   public static final String MONGO_DB_FACTORY_USER_DETAILS = "mongoDbFactoryUserDetails";
 
-  public static final String MONGO_CONNECTION_STRING = "mongodb+srv://%s:%s@appdetails.bulegrc.mongodb.net/?retryWrites=true&w=majority";
+  public static final String MONGO_CONNECTION_STRING =
+      "mongodb+srv://%s:%s@appdetails.bulegrc.mongodb.net/?retryWrites=true&w=majority";
 }
