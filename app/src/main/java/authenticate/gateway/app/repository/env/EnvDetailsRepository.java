@@ -1,4 +1,4 @@
-package authenticate.gateway.app.repository;
+package authenticate.gateway.app.repository.env;
 
 import authenticate.gateway.app.model.EnvDetails;
 import org.springframework.data.mongodb.repository.MongoRepository;

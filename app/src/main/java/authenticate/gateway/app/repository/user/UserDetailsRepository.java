@@ -1,4 +1,4 @@
-package authenticate.gateway.app.repository;
+package authenticate.gateway.app.repository.user;
 
 import authenticate.gateway.app.model.UserDetails;
 import org.springframework.data.mongodb.repository.MongoRepository;

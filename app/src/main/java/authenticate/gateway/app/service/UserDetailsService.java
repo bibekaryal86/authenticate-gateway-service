@@ -5,7 +5,7 @@ import authenticate.gateway.app.exception.ServerException;
 import authenticate.gateway.app.model.UserDetails;
 import authenticate.gateway.app.model.UserDetailsRequest;
 import authenticate.gateway.app.model.UserDetailsResponse;
-import authenticate.gateway.app.repository.UserDetailsRepository;
+import authenticate.gateway.app.repository.user.UserDetailsRepository;
 import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import com.fasterxml.jackson.core.type.TypeReference;

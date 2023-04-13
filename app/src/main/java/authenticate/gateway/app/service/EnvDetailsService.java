@@ -3,7 +3,7 @@ package authenticate.gateway.app.service;
 import static org.springframework.util.StringUtils.hasText;
 
 import authenticate.gateway.app.model.EnvDetails;
-import authenticate.gateway.app.repository.EnvDetailsRepository;
+import authenticate.gateway.app.repository.env.EnvDetailsRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

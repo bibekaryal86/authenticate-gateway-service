@@ -1,6 +1,6 @@
 package authenticate.gateway.app.config;
 
-import authenticate.gateway.app.repository.UserDetailsRepository;
+import authenticate.gateway.app.repository.user.UserDetailsRepository;
 import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import com.mongodb.ConnectionString;
