@@ -41,6 +41,7 @@ public class FilterAuth implements GatewayFilter {
 
   @Scheduled(cron = "0 0 0/6 * * *")
   private void setAuthExclusions() {
+    log.info("Setting Auth Exclusions...");
     EnvDetails envDetails =
         envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_EXCLUSIONS).get(0);
     AUTH_EXCLUSIONS = Collections.unmodifiableList(envDetails.getListValue());

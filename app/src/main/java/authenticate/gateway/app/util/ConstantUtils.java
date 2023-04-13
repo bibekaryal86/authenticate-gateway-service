@@ -11,8 +11,7 @@ public class ConstantUtils {
   public static final String MONGO_USER = "MONGO_USER";
   public static final String MONGO_PWD = "MONGO_PWD";
   public static final String APP_SECRET_KEY = "SECRET_KEY";
-  // also provided at runtime but as appendix to service name
-  // eg: pets-service-user, pets-service-pwd, for all services
+
   public static final String SERVICE_AUTH_USR = "-usr";
   public static final String SERVICE_AUTH_PWD = "-pwd";
 
