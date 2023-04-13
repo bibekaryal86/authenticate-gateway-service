@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpHeaders;
@@ -32,9 +31,13 @@ import reactor.core.publisher.Mono;
 @Component
 public class FilterAuth implements GatewayFilter {
 
-  @Autowired private EnvDetailsService envDetailsService;
+  private final EnvDetailsService envDetailsService;
 
   private static List<String> AUTH_EXCLUSIONS = new ArrayList<>();
+
+  public FilterAuth(EnvDetailsService envDetailsService) {
+    this.envDetailsService = envDetailsService;
+  }
 
   @Scheduled(cron = "0 0 0/6 * * *")
   private void setAuthExclusions() {

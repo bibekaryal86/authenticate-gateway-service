@@ -1,5 +1,6 @@
 package authenticate.gateway.app.gateway;
 
+import authenticate.gateway.app.service.EnvDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -23,6 +24,11 @@ public class Routes {
   @Value("${routes_base_url.hdt_service}")
   private String hdtServiceBaseUrl;
 
+  private final EnvDetailsService envDetailsService;
+  public Routes(EnvDetailsService envDetailsService) {
+    this.envDetailsService = envDetailsService;
+  }
+
   @Bean
   public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
     return builder
@@ -30,18 +36,18 @@ public class Routes {
         .route(
             r ->
                 r.path("/pets-database/**")
-                    .filters(f -> f.filter(new FilterAuth()))
+                    .filters(f -> f.filter(new FilterAuth(envDetailsService)))
                     .uri(this.petsDatabaseBaseUrl))
         .route(
             r ->
                 r.path("/pets-service/**")
-                    .filters(f -> f.filter(new FilterAuth()))
+                    .filters(f -> f.filter(new FilterAuth(envDetailsService)))
                     .uri(this.petsServiceBaseUrl))
         .route(r -> r.path("/pets-authenticate/**").uri(this.petsAuthenticateBaseUrl))
         .route(
             r ->
                 r.path("/health-data/**")
-                    .filters(f -> f.filter(new FilterAuth()))
+                    .filters(f -> f.filter(new FilterAuth(envDetailsService)))
                     .uri(this.hdtServiceBaseUrl))
         .build();
   }
