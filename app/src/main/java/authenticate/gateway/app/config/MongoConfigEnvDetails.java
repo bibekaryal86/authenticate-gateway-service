@@ -1,6 +1,6 @@
 package authenticate.gateway.app.config;
 
-import authenticate.gateway.app.model.EnvDetails;
+import authenticate.gateway.app.repository.EnvDetailsRepository;
 import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import com.mongodb.ConnectionString;
@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableMongoRepositories(
-    basePackageClasses = EnvDetails.class,
+    basePackageClasses = EnvDetailsRepository.class,
     mongoTemplateRef = ConstantUtils.MONGO_TEMPLATE_ENV_DETAILS)
 public class MongoConfigEnvDetails {
 

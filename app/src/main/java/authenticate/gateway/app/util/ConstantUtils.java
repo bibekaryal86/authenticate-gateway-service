@@ -31,4 +31,6 @@ public class ConstantUtils {
 
   public static final String MONGO_CONNECTION_STRING =
       "mongodb+srv://%s:%s@appdetails.bulegrc.mongodb.net/?retryWrites=true&w=majority";
+
+  public static final String ENV_DETAILS_AUTH_EXCLUSIONS = "authExclusions";
 }

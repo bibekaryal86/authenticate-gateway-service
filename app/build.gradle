@@ -38,7 +38,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-rest:$springVersion"
     implementation "org.springframework.cloud:spring-cloud-starter-gateway:$springCloudVersion"
-    implementation "org.springframework.cloud:spring-cloud-starter-sleuth:$springCloudVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth:3.1.7"
     implementation "org.springframework.security:spring-security-crypto:$springSecurityVersion"
 
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.6'

@@ -1,6 +1,6 @@
 package authenticate.gateway.app.config;
 
-import authenticate.gateway.app.model.UserDetails;
+import authenticate.gateway.app.repository.UserDetailsRepository;
 import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import com.mongodb.ConnectionString;
@@ -10,6 +10,7 @@ import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
@@ -17,7 +18,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableMongoRepositories(
-    basePackageClasses = UserDetails.class,
+    basePackageClasses = UserDetailsRepository.class,
     mongoTemplateRef = ConstantUtils.MONGO_TEMPLATE_USER_DETAILS)
 public class MongoConfigUserDetails {
 

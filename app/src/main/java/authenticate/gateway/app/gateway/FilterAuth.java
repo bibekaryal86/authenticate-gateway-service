@@ -7,16 +7,23 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
+import authenticate.gateway.app.model.EnvDetails;
+import authenticate.gateway.app.service.EnvDetailsService;
+import authenticate.gateway.app.util.ConstantUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -25,13 +32,25 @@ import reactor.core.publisher.Mono;
 @Component
 public class FilterAuth implements GatewayFilter {
 
-  private static final List<String> AUTH_EXCLUSIONS =
-      List.of("/pets-service/tests/ping", "/pets-database/tests/ping", "/health-data/tests/ping");
+  @Autowired private EnvDetailsService envDetailsService;
+
+  private static List<String> AUTH_EXCLUSIONS = new ArrayList<>();
+
+  @Scheduled(cron = "0 0 0/6 * * *")
+  private void setAuthExclusions() {
+    EnvDetails envDetails =
+        envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_EXCLUSIONS).get(0);
+    AUTH_EXCLUSIONS = Collections.unmodifiableList(envDetails.getListValue());
+  }
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
     String requestPathString = exchange.getRequest().getPath().toString();
     String authHeaderString = authHeader(requestPathString);
+
+    if (AUTH_EXCLUSIONS.isEmpty()) {
+      setAuthExclusions();
+    }
 
     if (AUTH_EXCLUSIONS.contains(requestPathString)) {
       return chain.filter(exchange);
