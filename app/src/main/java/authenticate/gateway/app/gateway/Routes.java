@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -41,22 +42,26 @@ public class Routes {
             r ->
                 r.path("/pets-database/**")
                     .filters(f -> f.filter(new FilterAuth(envDetailsService)))
-                    .uri(""))
+                    .uri("https://pets-database.appspot.com"))
         .route(
             r ->
                 r.path("/pets-service/**")
                     .filters(f -> f.filter(new FilterAuth(envDetailsService)))
-                    .uri(""))
-        .route(r -> r.path("/pets-authenticate/**").uri(""))
+                    .uri("https://pets-service.appspot.com"))
+        .route(
+            r ->
+                r.path("/pets-authenticate/**")
+                    .filters(f -> f.filter(new FilterAuth(envDetailsService)))
+                    .uri("https://pets-authenticate.appspot.com"))
         .route(
             r ->
                 r.path("/health-data/**")
                     .filters(f -> f.filter(new FilterAuth(envDetailsService)))
-                    .uri(""))
+                    .uri("https://healthdatajava.appspot.com"))
         .build();
   }
 
-  @Scheduled(cron = "0 0 0/6 * * *")
+  @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 6)
   private void setPaths() {
     log.info("Setting Paths...");
     EnvDetails envDetails =
@@ -64,7 +69,7 @@ public class Routes {
     routePaths = Collections.unmodifiableList(envDetails.getListValue());
   }
 
-  @Scheduled(cron = "0 0 0/6 * * *")
+  @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 6)
   private void setBaseUrls() {
     log.info("Setting Base Urls...");
     EnvDetails envDetails =

@@ -1,6 +1,10 @@
 spring:
   application:
     name: authenticate-gateway
+  task:
+    scheduling:
+      pool:
+        size: 10
   cloud:
     gateway:
       globalcors:

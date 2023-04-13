@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -131,7 +132,7 @@ public class FilterAuth implements GatewayFilter {
         httpMethod);
   }
 
-  @Scheduled(cron = "0 0 0/6 * * *")
+  @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 6)
   private void setAuthExclusions() {
     log.info("Setting Auth Exclusions...");
     EnvDetails envDetails =
@@ -139,7 +140,7 @@ public class FilterAuth implements GatewayFilter {
     authExclusions = Collections.unmodifiableList(envDetails.getListValue());
   }
 
-  @Scheduled(cron = "0 0 0/6 * * *")
+  @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 6)
   private void setAuthConfigs() {
     log.info("Setting Auth Configs...");
     EnvDetails envDetails =
