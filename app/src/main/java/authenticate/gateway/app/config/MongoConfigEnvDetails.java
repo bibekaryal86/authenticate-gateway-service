@@ -10,6 +10,7 @@ import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
@@ -33,6 +34,7 @@ public class MongoConfigEnvDetails {
             .build());
   }
 
+  @Primary
   @Bean(name = ConstantUtils.MONGO_DB_FACTORY_ENV_DETAILS)
   public MongoDatabaseFactory mongoDatabaseFactory(
       @Qualifier(ConstantUtils.MONGO_CLIENT_ENV_DETAILS) MongoClient mongoClient) {
@@ -40,6 +42,7 @@ public class MongoConfigEnvDetails {
         mongoClient, ConstantUtils.MONGO_DATABASE_ENV_DETAILS);
   }
 
+  @Primary
   @Bean(name = ConstantUtils.MONGO_TEMPLATE_ENV_DETAILS)
   public MongoTemplate mongoTemplate(
       @Qualifier(ConstantUtils.MONGO_DB_FACTORY_ENV_DETAILS)
