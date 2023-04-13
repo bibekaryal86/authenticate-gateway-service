@@ -1,13 +1,8 @@
 package authenticate.gateway.app.gateway;
 
-import static authenticate.gateway.app.util.CommonUtils.getSystemEnvProperty;
-import static authenticate.gateway.app.util.ConstantUtils.*;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.util.CollectionUtils.isEmpty;
-import static org.springframework.util.StringUtils.hasText;
-
 import authenticate.gateway.app.model.EnvDetails;
 import authenticate.gateway.app.service.EnvDetailsService;
+import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,8 +19,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -35,8 +33,8 @@ public class FilterAuth implements GatewayFilter {
 
   private final EnvDetailsService envDetailsService;
 
-  private static List<String> AUTH_EXCLUSIONS = new ArrayList<>();
-  private static Map<String, String> AUTH_CONFIGS = new HashMap<>();
+  private static List<String> authExclusions = new ArrayList<>();
+  private static Map<String, String> authConfigs = new HashMap<>();
 
   public FilterAuth(EnvDetailsService envDetailsService) {
     this.envDetailsService = envDetailsService;
@@ -47,13 +45,13 @@ public class FilterAuth implements GatewayFilter {
     String requestPathString = exchange.getRequest().getPath().toString();
     String authHeaderString = authHeader(requestPathString);
 
-    if (AUTH_EXCLUSIONS.isEmpty()) {
+    if (authExclusions.isEmpty()) {
       setAuthExclusions();
     }
 
-    if (AUTH_EXCLUSIONS.contains(requestPathString)) {
+    if (authExclusions.contains(requestPathString)) {
       return chain.filter(exchange);
-    } else if (isTokenValid(exchange) && hasText(authHeaderString)) {
+    } else if (isTokenValid(exchange) && StringUtils.hasText(authHeaderString)) {
       return chain.filter(
           exchange
               .mutate()
@@ -63,7 +61,7 @@ public class FilterAuth implements GatewayFilter {
 
     } else {
       logRequestDetails(exchange);
-      exchange.getResponse().setStatusCode(UNAUTHORIZED);
+      exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
       return exchange.getResponse().setComplete();
     }
   }
@@ -79,17 +77,17 @@ public class FilterAuth implements GatewayFilter {
   }
 
   private String getAuthConfig(String serviceName) {
-    if (AUTH_CONFIGS.isEmpty()) {
+    if (authConfigs.isEmpty()) {
       setAuthConfigs();
     }
 
     String auth = "";
-    String serviceUsernamePropertyName = serviceName + SERVICE_AUTH_USR;
-    String servicePasswordPropertyName = serviceName + SERVICE_AUTH_PWD;
-    String username = AUTH_CONFIGS.get(serviceUsernamePropertyName);
-    String password = AUTH_CONFIGS.get(servicePasswordPropertyName);
+    String serviceUsernamePropertyName = serviceName + ConstantUtils.SERVICE_AUTH_USR;
+    String servicePasswordPropertyName = serviceName + ConstantUtils.SERVICE_AUTH_PWD;
+    String username = authConfigs.get(serviceUsernamePropertyName);
+    String password = authConfigs.get(servicePasswordPropertyName);
 
-    if (hasText(username) && hasText(password)) {
+    if (StringUtils.hasText(username) && StringUtils.hasText(password)) {
       auth =
           "Basic "
               + Base64.getEncoder()
@@ -104,13 +102,13 @@ public class FilterAuth implements GatewayFilter {
       HttpHeaders httpHeaders = exchange.getRequest().getHeaders();
       List<String> tokens = httpHeaders.get("Authorization");
 
-      if (!isEmpty(tokens)) {
+      if (!CollectionUtils.isEmpty(tokens)) {
         String oldToken = tokens.get(0);
         oldToken = oldToken.replace("Bearer ", "");
 
         Claims claims =
             Jwts.parser()
-                .setSigningKey(getSystemEnvProperty(APP_SECRET_KEY, null))
+                .setSigningKey(CommonUtils.getSystemEnvProperty(ConstantUtils.APP_SECRET_KEY, null))
                 .parseClaimsJws(oldToken)
                 .getBody();
 
@@ -138,13 +136,14 @@ public class FilterAuth implements GatewayFilter {
     log.info("Setting Auth Exclusions...");
     EnvDetails envDetails =
         envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_EXCLUSIONS).get(0);
-    AUTH_EXCLUSIONS = Collections.unmodifiableList(envDetails.getListValue());
+    authExclusions = Collections.unmodifiableList(envDetails.getListValue());
   }
 
   @Scheduled(cron = "0 0 0/6 * * *")
   private void setAuthConfigs() {
     log.info("Setting Auth Configs...");
-    EnvDetails envDetails = envDetailsService.getEnvDetails(ENV_DETAILS_AUTH_CONFIGS).get(0);
-    AUTH_CONFIGS = Collections.unmodifiableMap(envDetails.getMapValue());
+    EnvDetails envDetails =
+        envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_CONFIGS).get(0);
+    authConfigs = Collections.unmodifiableMap(envDetails.getMapValue());
   }
 }

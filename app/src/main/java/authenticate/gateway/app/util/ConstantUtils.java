@@ -33,4 +33,6 @@ public class ConstantUtils {
 
   public static final String ENV_DETAILS_AUTH_EXCLUSIONS = "authExclusions";
   public static final String ENV_DETAILS_AUTH_CONFIGS = "authConfigs";
+  public static final String ENV_DETAILS_ROUTE_PATHS = "routePaths";
+  public static final String ENV_DETAILS_BASE_URLS = "baseUrls_%s";
 }
