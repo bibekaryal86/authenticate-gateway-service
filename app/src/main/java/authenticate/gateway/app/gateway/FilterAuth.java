@@ -1,8 +1,7 @@
 package authenticate.gateway.app.gateway;
 
-import static authenticate.gateway.app.util.CommonUtils.getAuthConfig;
 import static authenticate.gateway.app.util.CommonUtils.getSystemEnvProperty;
-import static authenticate.gateway.app.util.ConstantUtils.APP_SECRET_KEY;
+import static authenticate.gateway.app.util.ConstantUtils.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
@@ -14,9 +13,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -34,17 +36,10 @@ public class FilterAuth implements GatewayFilter {
   private final EnvDetailsService envDetailsService;
 
   private static List<String> AUTH_EXCLUSIONS = new ArrayList<>();
+  private static Map<String, String> AUTH_CONFIGS = new HashMap<>();
 
   public FilterAuth(EnvDetailsService envDetailsService) {
     this.envDetailsService = envDetailsService;
-  }
-
-  @Scheduled(cron = "0 0 0/6 * * *")
-  private void setAuthExclusions() {
-    log.info("Setting Auth Exclusions...");
-    EnvDetails envDetails =
-        envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_EXCLUSIONS).get(0);
-    AUTH_EXCLUSIONS = Collections.unmodifiableList(envDetails.getListValue());
   }
 
   @Override
@@ -83,6 +78,27 @@ public class FilterAuth implements GatewayFilter {
     return "";
   }
 
+  private String getAuthConfig(String serviceName) {
+    if (AUTH_CONFIGS.isEmpty()) {
+      setAuthConfigs();
+    }
+
+    String auth = "";
+    String serviceUsernamePropertyName = serviceName + SERVICE_AUTH_USR;
+    String servicePasswordPropertyName = serviceName + SERVICE_AUTH_PWD;
+    String username = AUTH_CONFIGS.get(serviceUsernamePropertyName);
+    String password = AUTH_CONFIGS.get(servicePasswordPropertyName);
+
+    if (hasText(username) && hasText(password)) {
+      auth =
+          "Basic "
+              + Base64.getEncoder()
+                  .encodeToString(String.format("%s:%s", username, password).getBytes());
+    }
+
+    return auth;
+  }
+
   private boolean isTokenValid(ServerWebExchange exchange) {
     try {
       HttpHeaders httpHeaders = exchange.getRequest().getHeaders();
@@ -115,5 +131,20 @@ public class FilterAuth implements GatewayFilter {
         "Invalid / Expired Auth Token:: Incoming: [ {} ] | Method: [ {} ]",
         incomingUri,
         httpMethod);
+  }
+
+  @Scheduled(cron = "0 0 0/6 * * *")
+  private void setAuthExclusions() {
+    log.info("Setting Auth Exclusions...");
+    EnvDetails envDetails =
+        envDetailsService.getEnvDetails(ConstantUtils.ENV_DETAILS_AUTH_EXCLUSIONS).get(0);
+    AUTH_EXCLUSIONS = Collections.unmodifiableList(envDetails.getListValue());
+  }
+
+  @Scheduled(cron = "0 0 0/6 * * *")
+  private void setAuthConfigs() {
+    log.info("Setting Auth Configs...");
+    EnvDetails envDetails = envDetailsService.getEnvDetails(ENV_DETAILS_AUTH_CONFIGS).get(0);
+    AUTH_CONFIGS = Collections.unmodifiableMap(envDetails.getMapValue());
   }
 }
