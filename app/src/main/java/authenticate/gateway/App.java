@@ -10,6 +10,7 @@ import static java.util.Collections.singletonMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import reactor.core.publisher.Hooks;
 
 @Slf4j
 @SpringBootApplication
@@ -17,6 +18,9 @@ public class App {
 
   public static void main(String[] args) {
     log.info("Begin authenticate-gateway initialization...");
+    // required for traceId/spanId logging
+    Hooks.enableAutomaticContextPropagation();
+
     SpringApplication app = new SpringApplication(App.class);
     app.setDefaultProperties(
         singletonMap("server.port", getSystemEnvProperty(SERVER_PORT, "8080")));

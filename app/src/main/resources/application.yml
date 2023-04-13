@@ -20,3 +20,9 @@ management:
         include: "*"
         exclude: shutdown
       base-path: /authenticate-gateway/actuator
+  tracing:
+    enabled: true
+    propagation:
+      type: w3c
+    baggage:
+      enabled: true
