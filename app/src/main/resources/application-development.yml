@@ -1,5 +1,0 @@
-routes_base_url:
-  pets_database: 'http://localhost:8002'
-  pets_service: 'http://localhost:8003'
-  pets_authenticate: 'http://localhost:8004'
-  hdt_service: 'http://localhost:6001'

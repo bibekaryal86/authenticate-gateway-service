@@ -1,46 +1,55 @@
 package authenticate.gateway.app.gateway;
 
+import authenticate.gateway.app.service.EnvDetailsService;
+import authenticate.gateway.app.util.ConstantUtils;
+import java.util.List;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class Routes {
 
-    // Add routes here, and also update AUTH_EXCLUSIONS in FilterAuth.java if needed
+  private final String springProfilesActive;
+  private final EnvDetailsService envDetailsService;
 
-    @Value("${routes_base_url.pets_service}")
-    private String petsServiceBaseUrl;
+  public Routes(
+      @Value("${spring.profiles.active}") String springProfilesActive,
+      EnvDetailsService envDetailsService) {
+    this.springProfilesActive = springProfilesActive;
+    this.envDetailsService = envDetailsService;
+  }
 
-    @Value("${routes_base_url.pets_database}")
-    private String petsDatabaseBaseUrl;
+  @Bean
+  public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
+    RouteLocatorBuilder.Builder routes = builder.routes();
 
-    @Value("${routes_base_url.pets_authenticate}")
-    private String petsAuthenticateBaseUrl;
+    log.info("Getting Route Paths...");
+    List<String> routePaths =
+        envDetailsService
+            .getEnvDetails(ConstantUtils.ENV_DETAILS_ROUTE_PATHS)
+            .get(0)
+            .getListValue();
+    log.info("Getting Base Urls...");
+    Map<String, String> baseUrlsMap =
+        envDetailsService
+            .getEnvDetails(
+                String.format(ConstantUtils.ENV_DETAILS_BASE_URLS, this.springProfilesActive))
+            .get(0)
+            .getMapValue();
 
-    @Value("${routes_base_url.hdt_service}")
-    private String hdtServiceBaseUrl;
-
-    @Bean
-    public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route(r -> r
-                        .path("/pets-database/**")
-                        .filters(f -> f.filter(new FilterAuth()))
-                        .uri(this.petsDatabaseBaseUrl))
-                .route(r -> r
-                        .path("/pets-service/**")
-                        .filters(f -> f.filter(new FilterAuth()))
-                        .uri(this.petsServiceBaseUrl))
-                .route(r -> r
-                        .path("/pets-authenticate/**")
-                        .uri(this.petsAuthenticateBaseUrl))
-                .route(r -> r
-                        .path("/health-data/**")
-                        .filters(f -> f.filter(new FilterAuth()))
-                        .uri(this.hdtServiceBaseUrl))
-                .build();
+    for (String routePath : routePaths) {
+      String uri = baseUrlsMap.get(routePath);
+      routes.route(
+          r ->
+              r.path(routePath).filters(f -> f.filter(new FilterAuth(envDetailsService))).uri(uri));
     }
+
+    return routes.build();
+  }
 }

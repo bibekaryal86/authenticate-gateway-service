@@ -1,5 +1,0 @@
-routes_base_url:
-  pets_database: 'https://pets-database.appspot.com'
-  pets_service: 'https://pets-service.appspot.com'
-  pets_authenticate: 'https://pets-authenticate.appspot.com'
-  hdt_service: 'https://healthdatajava.appspot.com'

@@ -3,23 +3,30 @@
  */
 package authenticate.gateway;
 
+import static authenticate.gateway.app.util.CommonUtils.getSystemEnvProperty;
+import static authenticate.gateway.app.util.ConstantUtils.SERVER_PORT;
+import static java.util.Collections.singletonMap;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import static java.util.Collections.singletonMap;
-import static authenticate.gateway.app.util.CommonUtils.getSystemEnvProperty;
-import static authenticate.gateway.app.util.ConstantUtils.SERVER_PORT;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import reactor.core.publisher.Hooks;
 
 @Slf4j
+@EnableScheduling
 @SpringBootApplication
 public class App {
 
-    public static void main(String[] args) {
-        log.info("Begin authenticate-gateway initialization...");
-        SpringApplication app = new SpringApplication(App.class);
-        app.setDefaultProperties(singletonMap("server.port", getSystemEnvProperty(SERVER_PORT, "8080")));
-        app.run(args);
-        log.info("End authenticate-gateway initialization...");
-    }
+  public static void main(String[] args) {
+    log.info("Begin authenticate-gateway initialization...");
+    // required for traceId/spanId logging
+    Hooks.enableAutomaticContextPropagation();
+
+    SpringApplication app = new SpringApplication(App.class);
+    app.setDefaultProperties(
+        singletonMap("server.port", getSystemEnvProperty(SERVER_PORT, "8080")));
+    app.run(args);
+    log.info("End authenticate-gateway initialization...");
+  }
 }

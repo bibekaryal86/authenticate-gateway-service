@@ -2,9 +2,8 @@ package authenticate.gateway.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
-
 import java.io.Serializable;
+import lombok.*;
 
 @Data
 @Builder
@@ -12,7 +11,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AppUserDetailsResponse implements Serializable {
-    private String token;
-    private AppUserDetails userDetails;
+public class UserDetailsRequest implements Serializable {
+  private String username;
+  @ToString.Exclude private String password;
+  private UserDetails userDetails;
+  private String sourceIp;
 }

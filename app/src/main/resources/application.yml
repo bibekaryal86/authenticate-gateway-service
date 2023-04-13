@@ -1,6 +1,10 @@
 spring:
   application:
     name: authenticate-gateway
+  task:
+    scheduling:
+      pool:
+        size: 10
   cloud:
     gateway:
       globalcors:
@@ -17,6 +21,12 @@ management:
   endpoints:
     web:
       exposure:
-        include:
-          - health
+        include: "*"
+        exclude: shutdown
       base-path: /authenticate-gateway/actuator
+  tracing:
+    enabled: true
+    propagation:
+      type: w3c
+    baggage:
+      enabled: true
