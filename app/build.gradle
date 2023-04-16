@@ -30,7 +30,7 @@ bootJar {
 
 dependencies {
     def springVersion = "3.0.5"
-    def springCloudVersion = "4.0.2"
+    def springCloudVersion = "4.0.4"
     def springSecurityVersion = "6.0.2"
     implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-webflux:$springVersion"
