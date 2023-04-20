@@ -1,5 +1,8 @@
 package authenticate.gateway.app.util;
 
+import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import javax.crypto.SecretKey;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -10,5 +13,10 @@ public class CommonUtils {
     String envProperty =
         System.getProperty(keyName) != null ? System.getProperty(keyName) : System.getenv(keyName);
     return envProperty == null ? defaultValue : envProperty;
+  }
+
+  public static SecretKey getSecretKey() {
+    String petsSecretKey = getSystemEnvProperty(ConstantUtils.APP_SECRET_KEY, null);
+    return Keys.hmacShaKeyFor(petsSecretKey.getBytes(StandardCharsets.UTF_8));
   }
 }
