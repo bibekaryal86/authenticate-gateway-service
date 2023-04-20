@@ -7,11 +7,9 @@ import authenticate.gateway.app.model.UserDetailsRequest;
 import authenticate.gateway.app.model.UserDetailsResponse;
 import authenticate.gateway.app.repository.user.UserDetailsRepository;
 import authenticate.gateway.app.util.CommonUtils;
-import authenticate.gateway.app.util.ConstantUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.BeanUtils;
@@ -92,9 +90,7 @@ public class UserDetailsService {
 
       return Jwts.builder()
           .setClaims(claims)
-          .signWith(
-              SignatureAlgorithm.HS512,
-              CommonUtils.getSystemEnvProperty(ConstantUtils.APP_SECRET_KEY, null))
+          .signWith(CommonUtils.getSecretKey())
           .setExpiration(
               new Date(
                   System.currentTimeMillis()

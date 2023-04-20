@@ -1,8 +1,9 @@
 package authenticate.gateway.app.gateway;
 
+import static authenticate.gateway.app.util.CommonUtils.getSecretKey;
+
 import authenticate.gateway.app.model.EnvDetails;
 import authenticate.gateway.app.service.EnvDetailsService;
-import authenticate.gateway.app.util.CommonUtils;
 import authenticate.gateway.app.util.ConstantUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -108,8 +109,9 @@ public class FilterAuth implements GatewayFilter {
         oldToken = oldToken.replace("Bearer ", "");
 
         Claims claims =
-            Jwts.parser()
-                .setSigningKey(CommonUtils.getSystemEnvProperty(ConstantUtils.APP_SECRET_KEY, null))
+            Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
                 .parseClaimsJws(oldToken)
                 .getBody();
 
