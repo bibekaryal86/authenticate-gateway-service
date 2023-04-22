@@ -9,7 +9,7 @@
 plugins {
     id 'application'
     id 'java'
-    id 'org.springframework.boot' version '3.0.5'
+    id 'org.springframework.boot' version '3.0.6'
     id 'com.diffplug.spotless' version '6.18.0'
     id 'io.freefair.lombok' version '8.0.1'
 }
@@ -29,7 +29,7 @@ bootJar {
 }
 
 dependencies {
-    def springVersion = "3.0.5"
+    def springVersion = "3.0.6"
     def springCloudVersion = "4.0.4"
     def springSecurityVersion = "6.0.3"
     def jjwtVersion = "0.11.5"
@@ -42,7 +42,7 @@ dependencies {
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
     implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.0.4'
-    implementation 'ch.qos.logback:logback-classic:1.4.6'
+    implementation 'ch.qos.logback:logback-classic:1.4.7'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
 
