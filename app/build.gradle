@@ -9,7 +9,7 @@
 plugins {
     id 'application'
     id 'java'
-    id 'org.springframework.boot' version '3.0.7'
+    id 'org.springframework.boot' version '3.1.0'
     id 'com.diffplug.spotless' version '6.18.0'
     id 'io.freefair.lombok' version '8.0.1'
 }
@@ -29,7 +29,7 @@ bootJar {
 }
 
 dependencies {
-    def springVersion = "3.0.7"
+    def springVersion = "3.1.0"
     def springCloudVersion = "4.0.5"
     def springSecurityVersion = "6.1.0"
     def jjwtVersion = "0.11.5"
