@@ -89,9 +89,9 @@ public class UserDetailsService {
       Map<String, Object> claims = objectMapper.convertValue(tokenClaim, new TypeReference<>() {});
 
       return Jwts.builder()
-          .setClaims(claims)
+          .claims(claims)
           .signWith(CommonUtils.getSecretKey())
-          .setExpiration(
+          .expiration(
               new Date(
                   System.currentTimeMillis()
                       + 864000000)) // 24 hours, enforce inactive session in UI
