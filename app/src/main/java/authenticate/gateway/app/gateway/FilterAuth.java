@@ -109,11 +109,11 @@ public class FilterAuth implements GatewayFilter {
         oldToken = oldToken.replace("Bearer ", "");
 
         Claims claims =
-            Jwts.parserBuilder()
-                .setSigningKey(getSecretKey())
+            Jwts.parser()
+                .verifyWith(getSecretKey())
                 .build()
-                .parseClaimsJws(oldToken)
-                .getBody();
+                .parseSignedClaims(oldToken)
+                .getPayload();
 
         return claims.getExpiration().after(new Date(System.currentTimeMillis()));
       }
