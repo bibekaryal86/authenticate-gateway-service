@@ -41,7 +41,7 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
-    implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.2.1'
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.2.2'
     implementation 'ch.qos.logback:logback-classic:1.4.14'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
