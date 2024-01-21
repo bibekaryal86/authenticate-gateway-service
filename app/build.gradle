@@ -29,7 +29,7 @@ bootJar {
 }
 
 dependencies {
-    def springVersion = "3.2.1"
+    def springVersion = "3.2.2"
     def springCloudVersion = "4.1.1"
     def springSecurityVersion = "6.2.1"
     def jjwtVersion = "0.12.3"
