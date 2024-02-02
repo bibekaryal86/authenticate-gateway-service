@@ -32,7 +32,7 @@ dependencies {
     def springVersion = "3.2.2"
     def springCloudVersion = "4.1.1"
     def springSecurityVersion = "6.2.1"
-    def jjwtVersion = "0.12.4"
+    def jjwtVersion = "0.12.5"
     implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-webflux:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springVersion"
