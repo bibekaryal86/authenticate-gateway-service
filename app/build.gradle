@@ -31,7 +31,7 @@ bootJar {
 dependencies {
     def springVersion = "3.2.2"
     def springCloudVersion = "4.1.1"
-    def springSecurityVersion = "6.2.1"
+    def springSecurityVersion = "6.2.2"
     def jjwtVersion = "0.12.5"
     implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-webflux:$springVersion"
@@ -42,7 +42,7 @@ dependencies {
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
     implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.2.3'
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    implementation 'ch.qos.logback:logback-classic:1.5.0'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
 
