@@ -11,7 +11,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.4'
     id 'com.diffplug.spotless' version '6.25.0'
-    id 'io.freefair.lombok' version '8.10'
+    id 'io.freefair.lombok' version '8.10.2'
 }
 
 java {
